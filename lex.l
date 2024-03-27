@@ -12,7 +12,7 @@ digit [0-9]
 letter [a-zA-Z]
 identifier {letter}({letter}|{digit})*
 integer {digit}+
-operator [-+*/=<>]
+operator [-+*/=<>.]
 punctuation [(){}\[\];:,#?@]
 
 %%
