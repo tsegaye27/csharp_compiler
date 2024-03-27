@@ -13,7 +13,7 @@ letter [a-zA-Z]
 identifier {letter}({letter}|{digit})*
 integer {digit}+
 operator [-+*/=<>]
-punctuation [(){}\[\];:.,#?@]
+punctuation [(){}\[\];:,#?@]
 
 %%
 
@@ -77,7 +77,7 @@ int keyword_check(char *token) {
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        printf("Usage: ./lexer <source.cs>\n");
+        printf("Usage: ./lex <source.cs>\n");
         return 1;
     }
 
