@@ -75,21 +75,21 @@ int keyword_check(char *token) {
     return 0;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        printf("Usage: ./lex <source.cs>\n");
-        return 1;
-    }
+// int main(int argc, char* argv[]) {
+//     if (argc != 2) {
+//         printf("Usage: ./lex <source.cs>\n");
+//         return 1;
+//     }
 
-    FILE* file = fopen(argv[1], "r");
-    if (file == NULL) {
-        printf("Error opening file.\n");
-        return 1;
-    }
+//     FILE* file = fopen(argv[1], "r");
+//     if (file == NULL) {
+//         printf("Error opening file.\n");
+//         return 1;
+//     }
 
-    yyset_in(file);
-    yylex();
+//     yyset_in(file);
+//     yylex();
 
-    fclose(file);
-    return 0;
+//     fclose(file);
+//     return 0;
 }
