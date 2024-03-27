@@ -75,7 +75,7 @@
 
 extern int yylex();
 extern FILE* yyin;
-void yyerror(const char *s);
+int yyerror(const char* error_message);
 
 #line 81 "grammar.tab.c"
 
@@ -1236,8 +1236,194 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 5: /* statement: expression_statement  */
+#line 36 "grammar.y"
+                                 { printf("Using production rule: statement -> expression_statement\n"); }
+#line 1243 "grammar.tab.c"
+    break;
 
-#line 1241 "grammar.tab.c"
+  case 6: /* statement: declaration_statement  */
+#line 37 "grammar.y"
+                                  { printf("Using production rule: statement -> declaration_statement\n"); }
+#line 1249 "grammar.tab.c"
+    break;
+
+  case 7: /* statement: selection_statement  */
+#line 38 "grammar.y"
+                                { printf("Using production rule: statement -> selection_statement\n"); }
+#line 1255 "grammar.tab.c"
+    break;
+
+  case 8: /* statement: iteration_statement  */
+#line 39 "grammar.y"
+                                { printf("Using production rule: statement -> iteration_statement\n"); }
+#line 1261 "grammar.tab.c"
+    break;
+
+  case 9: /* statement: jump_statement  */
+#line 40 "grammar.y"
+                           { printf("Using production rule: statement -> jump_statement\n"); }
+#line 1267 "grammar.tab.c"
+    break;
+
+  case 10: /* statement: empty_statement  */
+#line 41 "grammar.y"
+                            { printf("Using production rule: statement -> empty_statement\n"); }
+#line 1273 "grammar.tab.c"
+    break;
+
+  case 11: /* expression_statement: expression ';'  */
+#line 44 "grammar.y"
+                                      { printf("Using production rule: expression_statement -> expression ';'\n"); }
+#line 1279 "grammar.tab.c"
+    break;
+
+  case 12: /* expression: IDENTIFIER  */
+#line 47 "grammar.y"
+                        { printf("Using production rule: expression -> IDENTIFIER\n"); }
+#line 1285 "grammar.tab.c"
+    break;
+
+  case 13: /* expression: NUMBER  */
+#line 48 "grammar.y"
+                    { printf("Using production rule: expression -> NUMBER\n"); }
+#line 1291 "grammar.tab.c"
+    break;
+
+  case 14: /* expression: STRING_LITERAL  */
+#line 49 "grammar.y"
+                            { printf("Using production rule: expression -> STRING_LITERAL\n"); }
+#line 1297 "grammar.tab.c"
+    break;
+
+  case 15: /* expression: expression '+' expression  */
+#line 50 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '+' expression\n"); }
+#line 1303 "grammar.tab.c"
+    break;
+
+  case 16: /* expression: expression '-' expression  */
+#line 51 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '-' expression\n"); }
+#line 1309 "grammar.tab.c"
+    break;
+
+  case 17: /* expression: expression '*' expression  */
+#line 52 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '*' expression\n"); }
+#line 1315 "grammar.tab.c"
+    break;
+
+  case 18: /* expression: expression '/' expression  */
+#line 53 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '/' expression\n"); }
+#line 1321 "grammar.tab.c"
+    break;
+
+  case 19: /* expression: expression '=' expression  */
+#line 54 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '=' expression\n"); }
+#line 1327 "grammar.tab.c"
+    break;
+
+  case 20: /* expression: expression '>' expression  */
+#line 55 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '>' expression\n"); }
+#line 1333 "grammar.tab.c"
+    break;
+
+  case 21: /* expression: expression '<' expression  */
+#line 56 "grammar.y"
+                                       { printf("Using production rule: expression -> expression '<' expression\n"); }
+#line 1339 "grammar.tab.c"
+    break;
+
+  case 22: /* expression: '(' expression ')'  */
+#line 57 "grammar.y"
+                                { printf("Using production rule: expression -> '(' expression ')'\n"); }
+#line 1345 "grammar.tab.c"
+    break;
+
+  case 23: /* declaration_statement: KW_INT IDENTIFIER '=' NUMBER ';'  */
+#line 60 "grammar.y"
+                                                         { printf("Using production rule: declaration_statement -> KW_INT IDENTIFIER '=' NUMBER ';'\n"); }
+#line 1351 "grammar.tab.c"
+    break;
+
+  case 24: /* declaration_statement: KW_STRING IDENTIFIER '=' STRING_LITERAL ';'  */
+#line 61 "grammar.y"
+                                                                     { printf("Using production rule: declaration_statement -> KW_STRING IDENTIFIER '=' STRING_LITERAL ';'\n"); }
+#line 1357 "grammar.tab.c"
+    break;
+
+  case 25: /* declaration_statement: KW_BOOL IDENTIFIER '=' KW_TRUE ';'  */
+#line 62 "grammar.y"
+                                                            { printf("Using production rule: declaration_statement -> KW_BOOL IDENTIFIER '=' KW_TRUE ';'\n"); }
+#line 1363 "grammar.tab.c"
+    break;
+
+  case 26: /* selection_statement: KW_IF '(' expression ')' statement  */
+#line 65 "grammar.y"
+                                                         { printf("Using production rule: selection_statement -> KW_IF '(' expression ')' statement\n"); }
+#line 1369 "grammar.tab.c"
+    break;
+
+  case 27: /* selection_statement: KW_IF '(' expression ')' statement KW_ELSE statement  */
+#line 66 "grammar.y"
+                                                                           { printf("Using production rule: selection_statement -> KW_IF '(' expression ')' statement KW_ELSE statement\n"); }
+#line 1375 "grammar.tab.c"
+    break;
+
+  case 28: /* iteration_statement: KW_WHILE '(' expression ')' statement  */
+#line 69 "grammar.y"
+                                                            { printf("Using production rule: iteration_statement -> KW_WHILE '(' expression ')' statement\n"); }
+#line 1381 "grammar.tab.c"
+    break;
+
+  case 29: /* iteration_statement: KW_FOR '(' expression_statement expression_statement expression ')' statement  */
+#line 70 "grammar.y"
+                                                                                                    { printf("Using production rule: iteration_statement -> KW_FOR '(' expression_statement expression_statement expression ')' statement\n"); }
+#line 1387 "grammar.tab.c"
+    break;
+
+  case 30: /* iteration_statement: KW_FOR '(' expression_statement expression_statement ')' statement  */
+#line 71 "grammar.y"
+                                                                                         { printf("Using production rule: iteration_statement -> KW_FOR '(' expression_statement expression_statement ')' statement\n"); }
+#line 1393 "grammar.tab.c"
+    break;
+
+  case 31: /* jump_statement: KW_BREAK ';'  */
+#line 74 "grammar.y"
+                              { printf("Using production rule: jump_statement -> KW_BREAK ';'\n"); }
+#line 1399 "grammar.tab.c"
+    break;
+
+  case 32: /* jump_statement: KW_CONTINUE ';'  */
+#line 75 "grammar.y"
+                                 { printf("Using production rule: jump_statement -> KW_CONTINUE ';'\n"); }
+#line 1405 "grammar.tab.c"
+    break;
+
+  case 33: /* jump_statement: KW_RETURN expression ';'  */
+#line 76 "grammar.y"
+                                          { printf("Using production rule: jump_statement -> KW_RETURN expression ';'\n"); }
+#line 1411 "grammar.tab.c"
+    break;
+
+  case 34: /* jump_statement: KW_RETURN ';'  */
+#line 77 "grammar.y"
+                               { printf("Using production rule: jump_statement -> KW_RETURN ';'\n"); }
+#line 1417 "grammar.tab.c"
+    break;
+
+  case 35: /* empty_statement: ';'  */
+#line 80 "grammar.y"
+                      { printf("Using production rule: empty_statement -> ';'\n"); }
+#line 1423 "grammar.tab.c"
+    break;
+
+
+#line 1427 "grammar.tab.c"
 
       default: break;
     }
@@ -1434,25 +1620,33 @@ yyreturnlab:
 
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        printf("Usage: ./parser <source.cs>\n");
+    if (argc < 2) {
+        printf("Input file not provided.\n");
         return 1;
     }
 
-    FILE* file = fopen(argv[1], "r");
-    if (file == NULL) {
-        printf("Error opening file.\n");
+    FILE* input_file = fopen(argv[1], "r");
+    if (!input_file) {
+        printf("Failed to open input file.\n");
         return 1;
     }
 
-    yyin = file;
-    yyparse();
+    yyin = input_file;
 
-    fclose(file);
+    int result = yyparse();
+
+    fclose(input_file);
+
+    if (result == 0) {
+        printf("Parsing completed.\n");
+    } else {
+        printf("Parsing failed.\n");
+    }
+
     return 0;
 }
 
-void yyerror(const char *s) {
-    fprintf(stderr, "Parser error: %s\n", s);
-    exit(1);
+int yyerror(const char* error_message) {
+    printf("Parsing error: %s\n", error_message);
+    return 1;
 }
