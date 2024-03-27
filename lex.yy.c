@@ -376,7 +376,7 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    4,    5,    1,    1,    1,    1,    5,
-        5,    6,    6,    5,    7,    5,    8,    9,    9,    9,
+        5,    6,    6,    5,    7,    1,    8,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    5,    5,    6,
        10,   11,    5,    5,   12,   12,   12,   12,   12,   12,
        12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
@@ -1834,7 +1834,7 @@ int keyword_check(char *token) {
         "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short",
         "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true",
         "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual",
-        "void", "volatile", "while"};
+        "void", "volatile", "while", "Console"};
     int num_keywords = sizeof(keywords) / sizeof(keywords[0]);
     for (int i = 0; i < num_keywords; i++) {
         if (strcmp(token, keywords[i]) == 0) {
@@ -1846,7 +1846,7 @@ int keyword_check(char *token) {
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        printf("Usage: ./lexer <source.cs>\n");
+        printf("Usage: ./lex <source.cs>\n");
         return 1;
     }
 
