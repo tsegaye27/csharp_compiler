@@ -34,7 +34,7 @@ punctuation [(){}\[\];:,#?@]
 }
 
 "//"(.)* {
-    printf("Comment: %s\n", yytext);
+    // Ignore Comment
 }
 
 [\t\n ]+ {
