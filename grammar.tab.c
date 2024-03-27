@@ -75,8 +75,9 @@
 
 extern int yylex();
 extern FILE* yyin;
+void yyerror(const char *s);
 
-#line 80 "grammar.tab.c"
+#line 81 "grammar.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -603,10 +604,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    28,    28,    31,    32,    35,    36,    37,    38,    39,
-      40,    43,    46,    47,    48,    49,    50,    51,    52,    53,
-      54,    55,    56,    59,    60,    61,    64,    65,    68,    69,
-      72,    73,    74,    77
+       0,    29,    29,    32,    33,    36,    37,    38,    39,    40,
+      41,    44,    47,    48,    49,    50,    51,    52,    53,    54,
+      55,    56,    57,    60,    61,    62,    65,    66,    69,    70,
+      73,    74,    75,    78
 };
 #endif
 
@@ -1234,7 +1235,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1238 "grammar.tab.c"
+#line 1239 "grammar.tab.c"
 
       default: break;
     }
@@ -1427,7 +1428,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 80 "grammar.y"
+#line 81 "grammar.y"
 
 
 // int main(int argc, char* argv[]) {
