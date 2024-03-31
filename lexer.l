@@ -51,14 +51,6 @@ void displaySymbolTable() {
     printf("----------------------------------------------------\n");
 }
 
-char* search_symbol_tableByname(char *name) {
-    for (int i = 0; i < symbol_count; i++) {
-        if (strcmp(symbol_table[i].name, name) == 0)
-            return token_strings[symbol_table[i].token_type];
-    }
-    return "UNKNOWN";
-}
-
 %}
 
 %%
