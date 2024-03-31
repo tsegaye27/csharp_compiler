@@ -67,24 +67,45 @@ extern int yydebug;
     RBRACE = 268,                  /* RBRACE  */
     SEMICOLON = 269,               /* SEMICOLON  */
     DOT = 270,                     /* DOT  */
-    ASSIGN = 271,                  /* ASSIGN  */
-    STRING = 272,                  /* STRING  */
-    BOOL = 273,                    /* BOOL  */
-    INT = 274,                     /* INT  */
-    MINUS = 275,                   /* MINUS  */
-    PLUS = 276,                    /* PLUS  */
-    MULTIPLY = 277,                /* MULTIPLY  */
-    DIVIDE = 278,                  /* DIVIDE  */
-    MODULO = 279,                  /* MODULO  */
-    LESS_THAN = 280,               /* LESS_THAN  */
-    LESS_EQUAL = 281,              /* LESS_EQUAL  */
-    GREATER_THAN = 282,            /* GREATER_THAN  */
-    GREATER_EQUAL = 283,           /* GREATER_EQUAL  */
-    EQUALS = 284,                  /* EQUALS  */
-    NOT_EQUALS = 285,              /* NOT_EQUALS  */
-    AND = 286,                     /* AND  */
-    OR = 287,                      /* OR  */
-    NOT = 288                      /* NOT  */
+    IF = 271,                      /* IF  */
+    ELSE = 272,                    /* ELSE  */
+    SWITCH = 273,                  /* SWITCH  */
+    CASE = 274,                    /* CASE  */
+    DEFAULT = 275,                 /* DEFAULT  */
+    BREAK = 276,                   /* BREAK  */
+    RETURN = 277,                  /* RETURN  */
+    ASSIGN = 278,                  /* ASSIGN  */
+    STRING = 279,                  /* STRING  */
+    BOOL = 280,                    /* BOOL  */
+    INT = 281,                     /* INT  */
+    MINUS = 282,                   /* MINUS  */
+    PLUS = 283,                    /* PLUS  */
+    MULTIPLY = 284,                /* MULTIPLY  */
+    DIVIDE = 285,                  /* DIVIDE  */
+    MODULO = 286,                  /* MODULO  */
+    LESS_THAN = 287,               /* LESS_THAN  */
+    LESS_EQUAL = 288,              /* LESS_EQUAL  */
+    GREATER_THAN = 289,            /* GREATER_THAN  */
+    GREATER_EQUAL = 290,           /* GREATER_EQUAL  */
+    EQUALS = 291,                  /* EQUALS  */
+    NOT_EQUALS = 292,              /* NOT_EQUALS  */
+    AND = 293,                     /* AND  */
+    OR = 294,                      /* OR  */
+    NOT = 295,                     /* NOT  */
+    COMMA = 296,                   /* COMMA  */
+    QUESTION_MARK = 297,           /* QUESTION_MARK  */
+    COLON = 298,                   /* COLON  */
+    WHILE = 299,                   /* WHILE  */
+    FOR = 300,                     /* FOR  */
+    CONTINUE = 301,                /* CONTINUE  */
+    LSBRACE = 302,                 /* LSBRACE  */
+    RSBRACE = 303,                 /* RSBRACE  */
+    DOUBLE = 304,                  /* DOUBLE  */
+    PRIVATE = 305,                 /* PRIVATE  */
+    PUBLIC = 306,                  /* PUBLIC  */
+    PROTECTED = 307,               /* PROTECTED  */
+    TRUE_VALUE = 308,              /* TRUE_VALUE  */
+    FALSE_VALUE = 309              /* FALSE_VALUE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -93,12 +114,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "parser.y"
+#line 23 "parser.y"
 
     char* strval;
     int intval;
 
-#line 102 "parser.tab.h"
+#line 123 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
