@@ -36,7 +36,6 @@ int search_symbol_table(char *name) {
 
 void add_to_symbol_table(char *name, int token) {
     strcpy(symbol_table[symbol_count].name, name);
-    // strcpy(symbol_table[symbol_count].data_type, ""); // Initialize data_type to empty string
     symbol_table[symbol_count].token_type = token;
     symbol_count++;
 }
