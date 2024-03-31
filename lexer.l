@@ -5,7 +5,7 @@
 #include "parser.tab.h"
 
 extern YYSTYPE yylval;
-extern int line_number; // Declaration of line_number here
+extern int line_number; 
 
 int line_number = 1;
 
