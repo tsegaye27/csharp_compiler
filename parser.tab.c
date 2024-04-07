@@ -72,10 +72,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern int search_symbol_table(char *name);
-extern void add_to_symbol_table(char *name, int type);
+extern int search_symbol_table(char *name, int scope);
+extern void add_to_symbol_table(char *name, char *type, int token, int scope);
 extern void displaySymbolTable();
+extern void push_symbol_table();
+extern void pop_symbol_table();
+extern void init_symbol_table();
 extern int line_number;
+extern int scope;
 
 extern FILE *yyin;
 extern int yylex();
@@ -89,7 +93,7 @@ typedef struct {
 #define YYSTYPE_IS_DECLARED
 
 
-#line 93 "parser.tab.c"
+#line 97 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -541,7 +545,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  35
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  114
+#define YYNRULES  115
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  246
 
@@ -597,18 +601,18 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    51,    51,    54,    55,    58,    59,    60,    61,    62,
-      63,    64,    65,    68,    69,    72,    73,    74,    77,    82,
-      83,    84,    87,    88,    91,    92,    95,    96,    99,   100,
-     102,   106,   107,   110,   111,   117,   118,   119,   120,   121,
-     122,   126,   129,   130,   133,   134,   137,   138,   142,   143,
-     154,   168,   182,   199,   200,   201,   202,   203,   207,   213,
-     218,   219,   222,   232,   240,   253,   254,   255,   256,   258,
-     259,   260,   267,   275,   276,   279,   280,   281,   283,   284,
-     286,   286,   288,   289,   290,   291,   292,   293,   294,   295,
-     296,   297,   298,   299,   300,   301,   302,   303,   304,   305,
-     306,   307,   308,   309,   310,   311,   312,   313,   314,   315,
-     316,   319,   327,   328,   329
+       0,    56,    56,    59,    60,    63,    64,    65,    66,    67,
+      68,    69,    70,    73,    74,    77,    78,    79,    82,    97,
+      98,    99,   102,   103,   106,   107,   110,   111,   114,   115,
+     117,   121,   122,   125,   126,   132,   133,   134,   135,   136,
+     137,   141,   144,   145,   148,   149,   152,   153,   157,   158,
+     169,   183,   197,   214,   215,   216,   217,   218,   222,   228,
+     233,   234,   237,   247,   255,   268,   269,   270,   271,   273,
+     274,   275,   282,   290,   291,   294,   295,   298,   300,   301,
+     302,   304,   304,   306,   307,   308,   309,   310,   311,   312,
+     313,   314,   315,   316,   317,   318,   319,   320,   321,   322,
+     323,   324,   325,   326,   327,   328,   329,   330,   331,   332,
+     333,   334,   337,   345,   346,   347
 };
 #endif
 
@@ -656,7 +660,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-84)
+#define YYTABLE_NINF (-85)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -697,26 +701,26 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,   112,   111,   113,     0,     0,    57,    65,     0,     0,
+       0,   113,   112,   114,     0,     0,    57,    65,     0,     0,
        0,     0,     0,     0,    54,    56,    53,     0,     0,     0,
-       0,     0,     0,    55,    67,    66,    68,    80,    81,     0,
+       0,     0,     0,    55,    67,    66,    68,    81,    82,     0,
        2,     3,     5,     6,     7,     8,     9,    10,    12,    26,
       11,    24,    25,    19,    20,    21,     0,    48,     0,    17,
-      16,     0,   114,    14,    82,     0,     0,     0,   111,     0,
-       0,    75,     0,     0,    23,    22,   107,     0,   103,     0,
+      16,     0,   115,    14,    83,     0,     0,     0,   112,     0,
+       0,    75,     0,     0,    23,    22,   108,     0,   104,     0,
        0,    30,     1,     4,    27,    15,    51,     0,     0,     0,
       13,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,    28,
-       0,    18,    61,   104,   110,     0,     0,     0,   108,     0,
-       0,     0,     0,     0,     0,     0,     0,    98,     0,   106,
-      84,     0,   105,    83,     0,    85,     0,    86,    91,    92,
-      93,    94,    95,    96,    99,   100,   101,    97,     0,     0,
+       0,    18,    61,   105,   111,     0,     0,     0,   109,     0,
+       0,     0,     0,     0,     0,     0,     0,    99,     0,   107,
+      85,     0,   106,    84,     0,    86,     0,    87,    92,    93,
+      94,    95,    96,    97,   100,   101,   102,    98,     0,     0,
        0,    29,    60,     0,    76,     0,     0,     0,     0,     0,
-      49,    52,    61,     0,     0,    88,    87,    89,    90,     0,
-       0,   102,    58,     0,    38,     0,     0,    32,     0,    74,
+      49,    52,    61,     0,    80,    89,    88,    90,    91,     0,
+       0,   103,    58,     0,    38,     0,     0,    32,     0,    74,
        0,     0,     0,    54,     0,     0,    69,     0,    77,     0,
        0,     0,    14,     0,     0,     0,    42,     0,     0,    73,
-       0,    50,    59,    74,     0,    71,     0,     0,   109,     0,
+       0,    50,    59,    74,     0,    71,     0,     0,   110,     0,
        0,     0,    46,    35,     0,    39,     0,     0,    43,    31,
        0,    64,     0,     0,    74,    70,    78,    79,    14,     0,
        0,     0,     0,     0,     0,    62,    72,     0,     0,     0,
@@ -885,8 +889,8 @@ static const yytype_int16 yytable[] =
        0,    83,    84,    85,    86,    87,    88,    89,    90,    91,
       92,    93,    94,    95,     0,    96,    80,    81,     0,     0,
        0,    98,     0,     0,     0,    82,     0,     0,     0,     0,
-       0,    85,    86,    87,   -83,   -83,   -83,   -83,   -83,   -83,
-     -83,   -83,    81,    96,    97,     0,     0,     0,     0,    98,
+       0,    85,    86,    87,   -84,   -84,   -84,   -84,   -84,   -84,
+     -84,   -84,    81,    96,    97,     0,     0,     0,     0,    98,
       82,     0,     0,     0,    83,    84,    85,    86,    87,    88,
       89,    90,    91,    92,    93,    94,    95,    81,    96,     0,
      160,     0,     0,     0,    98,    82,     0,     0,     0,    83,
@@ -1115,10 +1119,10 @@ static const yytype_int8 yyr1[] =
       75,    76,    76,    77,    77,    77,    77,    77,    78,    78,
       79,    79,    80,    80,    80,    81,    81,    81,    81,    82,
       82,    83,    83,    84,    84,    85,    85,    86,    86,    86,
-      87,    87,    88,    88,    88,    88,    88,    88,    88,    88,
+      86,    87,    87,    88,    88,    88,    88,    88,    88,    88,
       88,    88,    88,    88,    88,    88,    88,    88,    88,    88,
       88,    88,    88,    88,    88,    88,    88,    88,    88,    88,
-      88,    89,    89,    89,    89
+      88,    88,    89,    89,    89,    89
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1132,10 +1136,10 @@ static const yytype_int8 yyr2[] =
        6,     2,     4,     1,     1,     1,     1,     1,     5,     6,
        1,     0,     8,     9,     7,     1,     1,     1,     1,     1,
        3,     2,     4,     1,     0,     1,     3,     1,     3,     3,
-       1,     1,     1,     3,     3,     3,     3,     4,     4,     4,
-       4,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     4,     2,     3,     3,     3,     2,     3,     6,
-       3,     1,     1,     1,     1
+       0,     1,     1,     1,     3,     3,     3,     3,     4,     4,
+       4,     4,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     4,     2,     3,     3,     3,     2,     3,
+       6,     3,     1,     1,     1,     1
 };
 
 
@@ -1599,372 +1603,413 @@ yyreduce:
   switch (yyn)
     {
   case 13: /* expression_statement: expression SEMICOLON  */
-#line 68 "parser.y"
+#line 73 "parser.y"
                                             { printf("Expression statement.\n"); }
-#line 1605 "parser.tab.c"
+#line 1609 "parser.tab.c"
     break;
 
   case 18: /* directive_statement: USING ID SEMICOLON  */
-#line 77 "parser.y"
-                                         { printf("Using directive.\n"); 
-                      char *identifier = (yyvsp[-1].strval);
-                          add_to_symbol_table(identifier, ID); 
+#line 82 "parser.y"
+                                         { 
+    printf("Using directive.\n"); 
+    char *identifier = (yyvsp[-1].strval);
+    int token = search_symbol_table(identifier, scope);
+    if(token != -1) {
+        printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+        yyerror("Identifier already declared");
+    } else {
+        printf("Keyword 'using' added to symbol table with token type %d.\n", USING);
+        add_to_symbol_table("using", "keyword", USING, scope); 
+        printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+        add_to_symbol_table(identifier, "ID", ID, scope); 
+    }
 }
-#line 1614 "parser.tab.c"
+#line 1628 "parser.tab.c"
     break;
 
   case 22: /* exit_statement: RETURN statement_list  */
-#line 87 "parser.y"
+#line 102 "parser.y"
                                        { printf("exit_statement.\n"); }
-#line 1620 "parser.tab.c"
+#line 1634 "parser.tab.c"
     break;
 
   case 23: /* exit_statement: BREAK SEMICOLON  */
-#line 88 "parser.y"
+#line 103 "parser.y"
                                  { printf("exit_statement.\n"); }
-#line 1626 "parser.tab.c"
+#line 1640 "parser.tab.c"
     break;
 
   case 28: /* function_call: ID LPAREN RPAREN  */
-#line 99 "parser.y"
+#line 114 "parser.y"
                                  { printf("function_call.\n"); }
-#line 1632 "parser.tab.c"
+#line 1646 "parser.tab.c"
     break;
 
   case 29: /* function_call: ID LPAREN expression RPAREN  */
-#line 100 "parser.y"
+#line 115 "parser.y"
                               { printf("function_call.\n"); }
-#line 1638 "parser.tab.c"
+#line 1652 "parser.tab.c"
     break;
 
   case 30: /* continue_statement: CONTINUE SEMICOLON  */
-#line 102 "parser.y"
+#line 117 "parser.y"
                                         { printf("continue_statement.\n"); }
-#line 1644 "parser.tab.c"
+#line 1658 "parser.tab.c"
     break;
 
   case 31: /* while_statement: WHILE LPAREN statement RPAREN LBRACE statement_list RBRACE  */
-#line 106 "parser.y"
+#line 121 "parser.y"
                                                                              { printf("While statement block.\n"); }
-#line 1650 "parser.tab.c"
+#line 1664 "parser.tab.c"
     break;
 
   case 32: /* while_statement: WHILE LPAREN statement RPAREN statement_list  */
-#line 107 "parser.y"
+#line 122 "parser.y"
                                                                { printf("While statement.\n"); }
-#line 1656 "parser.tab.c"
+#line 1670 "parser.tab.c"
     break;
 
   case 33: /* for_statement: FOR LPAREN statement SEMICOLON expression SEMICOLON expression RPAREN LBRACE statement RBRACE  */
-#line 110 "parser.y"
+#line 125 "parser.y"
                                                                                                               { printf("For statement block.\n"); }
-#line 1662 "parser.tab.c"
+#line 1676 "parser.tab.c"
     break;
 
   case 34: /* for_statement: FOR LPAREN statement SEMICOLON expression SEMICOLON expression RPAREN statement  */
-#line 111 "parser.y"
+#line 126 "parser.y"
                                                                                                 { printf("For statement.\n"); }
-#line 1668 "parser.tab.c"
+#line 1682 "parser.tab.c"
     break;
 
   case 35: /* if_statement: IF LPAREN statement RPAREN LBRACE statement_list RBRACE  */
-#line 117 "parser.y"
+#line 132 "parser.y"
                                                                        { printf("If statement.\n"); }
-#line 1674 "parser.tab.c"
+#line 1688 "parser.tab.c"
     break;
 
   case 36: /* if_statement: IF LPAREN statement RPAREN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE  */
-#line 118 "parser.y"
+#line 133 "parser.y"
                                                                                                          { printf("If-else statement.\n"); }
-#line 1680 "parser.tab.c"
+#line 1694 "parser.tab.c"
     break;
 
   case 37: /* if_statement: IF LPAREN statement RPAREN LBRACE statement_list RBRACE ELSE statement_list  */
-#line 119 "parser.y"
+#line 134 "parser.y"
                                                                                            { printf("If-else statement.\n"); }
-#line 1686 "parser.tab.c"
+#line 1700 "parser.tab.c"
     break;
 
   case 38: /* if_statement: IF LPAREN statement RPAREN statement_list  */
-#line 120 "parser.y"
+#line 135 "parser.y"
                                                          { printf("If statement.\n"); }
-#line 1692 "parser.tab.c"
+#line 1706 "parser.tab.c"
     break;
 
   case 39: /* if_statement: IF LPAREN statement RPAREN statement_list ELSE statement_list  */
-#line 121 "parser.y"
+#line 136 "parser.y"
                                                                              { printf("If-else statement.\n"); }
-#line 1698 "parser.tab.c"
+#line 1712 "parser.tab.c"
     break;
 
   case 40: /* if_statement: IF LPAREN statement RPAREN statement_list ELSE LBRACE statement_list RBRACE  */
-#line 122 "parser.y"
+#line 137 "parser.y"
                                                                                            { printf("If-else statement.\n"); }
-#line 1704 "parser.tab.c"
+#line 1718 "parser.tab.c"
     break;
 
   case 41: /* switch_statement: SWITCH LPAREN expression RPAREN LBRACE case_list DEFAULT COLON statement_list RBRACE  */
-#line 126 "parser.y"
+#line 141 "parser.y"
                                                                                                         { printf("Switch statement.\n"); }
-#line 1710 "parser.tab.c"
+#line 1724 "parser.tab.c"
     break;
 
   case 46: /* ternary_expression: expression QUESTION_MARK expression COLON expression SEMICOLON  */
-#line 137 "parser.y"
+#line 152 "parser.y"
                                                                                     { printf("Ternary expression.\n"); }
-#line 1716 "parser.tab.c"
+#line 1730 "parser.tab.c"
     break;
 
   case 47: /* ternary_expression: expression QUESTION_MARK LBRACE expression RBRACE COLON LBRACE expression RBRACE  */
-#line 138 "parser.y"
+#line 153 "parser.y"
                                                                                                       { printf("Ternary expression.\n"); }
-#line 1722 "parser.tab.c"
+#line 1736 "parser.tab.c"
     break;
 
   case 48: /* var_declarations: var_declaration  */
-#line 142 "parser.y"
+#line 157 "parser.y"
                                    { printf("Declaration statement.\n"); }
-#line 1728 "parser.tab.c"
+#line 1742 "parser.tab.c"
     break;
 
   case 49: /* var_declarations: type ID ASSIGN expression  */
-#line 143 "parser.y"
+#line 158 "parser.y"
                                             { printf("Declaration statement with assignment.\n");
                                      char *identifier = (yyvsp[-2].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, (yyvsp[-3].strval), ID, scope); 
                       } }
-#line 1744 "parser.tab.c"
+#line 1758 "parser.tab.c"
     break;
 
   case 50: /* var_declarations: type LSBRACE RSBRACE ID ASSIGN expression  */
-#line 154 "parser.y"
+#line 169 "parser.y"
                                                                  { printf("Declaration statement with assignment.\n");
                                      char *identifier = (yyvsp[-2].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, (yyvsp[-5].strval), ID, scope); 
                       } }
-#line 1760 "parser.tab.c"
+#line 1774 "parser.tab.c"
     break;
 
   case 51: /* var_declaration: type ID  */
-#line 169 "parser.y"
+#line 184 "parser.y"
                   {
                       printf("Variable declaration: %s\n", (yyvsp[0].strval));
                       char *identifier = (yyvsp[0].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token != -1) {
                           printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
                           yyerror("Identifier already declared");
                           
                       } else {
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, (yyvsp[-1].strval), ID, scope); 
                       }
                   }
-#line 1778 "parser.tab.c"
+#line 1792 "parser.tab.c"
     break;
 
   case 52: /* var_declaration: type LSBRACE RSBRACE ID  */
-#line 183 "parser.y"
-                  {
-                      printf("Variable declaration: %s\n", (yyvsp[0].strval));
-                      char *identifier = (yyvsp[0].strval);
-                      int token = search_symbol_table(identifier);
-                      if (token != -1) {
-                          printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
-                          yyerror("Identifier already declared");
-                          
-                      } else {
-                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                          add_to_symbol_table(identifier, ID); 
-                      }
-                  }
-#line 1796 "parser.tab.c"
+#line 198 "parser.y"
+                    {
+                        printf("Array declaration: %s\n", (yyvsp[0].strval));
+                        char *identifier = (yyvsp[0].strval);
+                        int token = search_symbol_table(identifier, scope);
+                        if (token != -1) {
+                            printf("Error: Identifier '%s' already exists in the symbol table with token type %d.\n", identifier, token);
+                            yyerror("Identifier already declared");
+                        } else {
+                            char arrayType[50];
+                            sprintf(arrayType, "%s[]", (yyvsp[-3].strval));
+                            printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                            add_to_symbol_table(identifier, arrayType, ID, scope); 
+                        }
+                    }
+#line 1811 "parser.tab.c"
+    break;
+
+  case 53: /* type: INT  */
+#line 214 "parser.y"
+               { (yyval.strval) = "int"; }
+#line 1817 "parser.tab.c"
+    break;
+
+  case 54: /* type: STRING  */
+#line 215 "parser.y"
+               { (yyval.strval) = "string"; }
+#line 1823 "parser.tab.c"
+    break;
+
+  case 55: /* type: DOUBLE  */
+#line 216 "parser.y"
+               { (yyval.strval) = "double"; }
+#line 1829 "parser.tab.c"
+    break;
+
+  case 56: /* type: BOOL  */
+#line 217 "parser.y"
+               { (yyval.strval) = "bool"; }
+#line 1835 "parser.tab.c"
+    break;
+
+  case 57: /* type: VOID  */
+#line 218 "parser.y"
+               { (yyval.strval) = "void"; }
+#line 1841 "parser.tab.c"
     break;
 
   case 58: /* class_declarations: CLASS ID LBRACE class_body RBRACE  */
-#line 208 "parser.y"
+#line 223 "parser.y"
            {
                printf("Parsed class declaration: %s\n", (yyvsp[-3].strval));
                                      char *identifier = (yyvsp[-3].strval);
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, "class", ID, scope); 
            }
-#line 1806 "parser.tab.c"
+#line 1851 "parser.tab.c"
     break;
 
   case 59: /* class_declarations: modifier CLASS ID LBRACE class_body RBRACE  */
-#line 213 "parser.y"
+#line 228 "parser.y"
                                                        {
             printf("Parsed class declaration with modifier: %s\n", (yyvsp[-3].strval));
            }
-#line 1814 "parser.tab.c"
+#line 1859 "parser.tab.c"
     break;
 
   case 60: /* class_body: statement_list  */
-#line 218 "parser.y"
+#line 233 "parser.y"
                           { printf("class body");}
-#line 1820 "parser.tab.c"
+#line 1865 "parser.tab.c"
     break;
 
   case 62: /* function_declarations: modifier type ID LPAREN RPAREN LBRACE func_body RBRACE  */
-#line 223 "parser.y"
+#line 238 "parser.y"
             {
                 printf("Parsed function declaration with modifier: %s\n", (yyvsp[-5].strval));
                            char *identifier = (yyvsp[-5].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, (yyvsp[-6].strval), ID, scope); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
             }
-#line 1834 "parser.tab.c"
-    break;
-
-  case 63: /* function_declarations: modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE  */
-#line 232 "parser.y"
-                                                                                    {
-                           char *identifier = (yyvsp[-6].strval);
-                      int token = search_symbol_table(identifier);
-                      if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
-                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                      } 
-            }
-#line 1847 "parser.tab.c"
-    break;
-
-  case 64: /* function_declarations: type ID LPAREN RPAREN LBRACE func_body RBRACE  */
-#line 241 "parser.y"
-            {
-                printf("Parsed function declaration: %s\n", (yyvsp[-5].strval));
-                           char *identifier = (yyvsp[-5].strval);
-                      int token = search_symbol_table(identifier);
-                      if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
-                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
-                      } 
-            }
-#line 1861 "parser.tab.c"
-    break;
-
-  case 65: /* modifier: STATIC  */
-#line 253 "parser.y"
-                  { printf("Static modifier.\n"); }
-#line 1867 "parser.tab.c"
-    break;
-
-  case 66: /* modifier: PUBLIC  */
-#line 254 "parser.y"
-         { printf("Public modifier.\n"); }
-#line 1873 "parser.tab.c"
-    break;
-
-  case 67: /* modifier: PRIVATE  */
-#line 255 "parser.y"
-          { printf("Private modifier.\n"); }
 #line 1879 "parser.tab.c"
     break;
 
-  case 68: /* modifier: PROTECTED  */
+  case 63: /* function_declarations: modifier type ID LPAREN parameter_list RPAREN LBRACE func_body RBRACE  */
+#line 247 "parser.y"
+                                                                                    {
+                           char *identifier = (yyvsp[-6].strval);
+                      int token = search_symbol_table(identifier, scope);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, (yyvsp[-7].strval), ID, scope); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
+            }
+#line 1892 "parser.tab.c"
+    break;
+
+  case 64: /* function_declarations: type ID LPAREN RPAREN LBRACE func_body RBRACE  */
 #line 256 "parser.y"
+            {
+                printf("Parsed function declaration: %s\n", (yyvsp[-5].strval));
+                           char *identifier = (yyvsp[-5].strval);
+                      int token = search_symbol_table(identifier, scope);
+                      if (token == -1) {
+                          add_to_symbol_table(identifier, (yyvsp[-6].strval), ID, scope); 
+                          printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
+                      } 
+            }
+#line 1906 "parser.tab.c"
+    break;
+
+  case 65: /* modifier: STATIC  */
+#line 268 "parser.y"
+                  { printf("Static modifier.\n"); }
+#line 1912 "parser.tab.c"
+    break;
+
+  case 66: /* modifier: PUBLIC  */
+#line 269 "parser.y"
+         { printf("Public modifier.\n"); }
+#line 1918 "parser.tab.c"
+    break;
+
+  case 67: /* modifier: PRIVATE  */
+#line 270 "parser.y"
+          { printf("Private modifier.\n"); }
+#line 1924 "parser.tab.c"
+    break;
+
+  case 68: /* modifier: PROTECTED  */
+#line 271 "parser.y"
             { printf("Protected modifier.\n"); }
-#line 1885 "parser.tab.c"
+#line 1930 "parser.tab.c"
     break;
 
   case 70: /* parameter_list: parameter_list COMMA parameter  */
-#line 259 "parser.y"
+#line 274 "parser.y"
                                                { printf("Parameter list.\n"); }
-#line 1891 "parser.tab.c"
+#line 1936 "parser.tab.c"
     break;
 
   case 71: /* parameter: type ID  */
-#line 260 "parser.y"
+#line 275 "parser.y"
                     { printf("Parameter.\n");
                            char *identifier = (yyvsp[0].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, (yyvsp[-1].strval), ID, scope); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       }  }
-#line 1903 "parser.tab.c"
+#line 1948 "parser.tab.c"
     break;
 
   case 72: /* parameter: STRING LSBRACE RSBRACE ID  */
-#line 267 "parser.y"
+#line 282 "parser.y"
                             { printf("Parameter.\n"); 
                            char *identifier = (yyvsp[0].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, "string", ID, scope); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } }
-#line 1915 "parser.tab.c"
+#line 1960 "parser.tab.c"
     break;
 
   case 78: /* console_list: console_list COMMA expression  */
-#line 283 "parser.y"
+#line 300 "parser.y"
                                 { printf("Console list.\n"); }
-#line 1921 "parser.tab.c"
+#line 1966 "parser.tab.c"
     break;
 
   case 79: /* console_list: expression PLUS statement_list  */
-#line 284 "parser.y"
+#line 301 "parser.y"
                                 { printf("console list.\n"); }
-#line 1927 "parser.tab.c"
+#line 1972 "parser.tab.c"
     break;
 
-  case 110: /* expression: LBRACE array_list RBRACE  */
-#line 316 "parser.y"
+  case 111: /* expression: LBRACE array_list RBRACE  */
+#line 334 "parser.y"
                                       { printf("Array list.\n"); }
-#line 1933 "parser.tab.c"
+#line 1978 "parser.tab.c"
     break;
 
-  case 111: /* primary_expression: ID  */
-#line 319 "parser.y"
+  case 112: /* primary_expression: ID  */
+#line 337 "parser.y"
                         { printf("Primary expression (identifier): %s\n", (yyvsp[0].strval));
            char *identifier = (yyvsp[0].strval);
-                      int token = search_symbol_table(identifier);
+                      int token = search_symbol_table(identifier, scope);
                       if (token == -1) {
-                          add_to_symbol_table(identifier, ID); 
+                          add_to_symbol_table(identifier, "ID", ID, scope); 
                           printf("Identifier '%s' added to symbol table with token type %d.\n", identifier, ID);
                       } 
  }
-#line 1946 "parser.tab.c"
+#line 1991 "parser.tab.c"
     break;
 
-  case 112: /* primary_expression: STRING_LITERAL  */
-#line 327 "parser.y"
+  case 113: /* primary_expression: STRING_LITERAL  */
+#line 345 "parser.y"
                                     { printf("Primary expression (string literal): %s\n", (yyvsp[0].strval)); }
-#line 1952 "parser.tab.c"
+#line 1997 "parser.tab.c"
     break;
 
-  case 113: /* primary_expression: NUMBER  */
-#line 328 "parser.y"
+  case 114: /* primary_expression: NUMBER  */
+#line 346 "parser.y"
                             { printf("Primary expression (number): %s\n", (yyvsp[0].strval)); }
-#line 1958 "parser.tab.c"
+#line 2003 "parser.tab.c"
     break;
 
-  case 114: /* primary_expression: bool_values  */
-#line 329 "parser.y"
+  case 115: /* primary_expression: bool_values  */
+#line 347 "parser.y"
                                  { printf("Primary expression (boolean)\n"); }
-#line 1964 "parser.tab.c"
+#line 2009 "parser.tab.c"
     break;
 
 
-#line 1968 "parser.tab.c"
+#line 2013 "parser.tab.c"
 
       default: break;
     }
@@ -2157,7 +2202,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 331 "parser.y"
+#line 349 "parser.y"
 
 
 void yyerror(const char *s) {
@@ -2167,6 +2212,7 @@ void yyerror(const char *s) {
 
 
 int main(int argc, char *argv[]) {
+    init_symbol_table();
     if (argc < 2) {
         printf("Usage: %s <input_file>\n", argv[0]);
         return 1;
